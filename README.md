@@ -125,6 +125,7 @@ root
 ## 使用注意 
 
 ##### 说明
+
 * 编译完的curl库已经支持ssl和http2了，jni 将使用动态库是libcurl.so，头文件则是include/curl路径，由于是动态链接，使用时也需要将libssl.so, libcrypto.so和libnghttp2.so也一并拷贝.
 
 * Android 在调用 so 库时是用的System.loadLibrary(),由于libcurl.so与libssl.so,libcrypto.so,libnghttp2.so相关联，所以会libcurl.so被加载时，这些库也会被加载。
@@ -139,6 +140,7 @@ root
 
 
 ##### 下面两种方法可以解决上述问题（动态库静态库都一样改法，这里就讲动态库）
+
 ###### 1. 编译libssl.so libcrypto.so libnghttp2.so前，修改相关配置或脚本，让其生成指定的名字， 比如改为 libsss.so libccc.so 。然后，编译libcurl.so时，也要修改相关脚本或配置，使其依赖libsss.so libccc.so 这些库，而不是先前名字那些库；另外，也可以修改相关脚本或配置，使其编译时创建引用库和不出现版本号在.so后面，这样就能解决上述问题。
 
 
@@ -173,15 +175,18 @@ root
  		3. 修改libcurl.so的[NEEDED], libcrypto.so 改为 libccc.so, libssl.so 改为libsss.so
  		4. libnghttp2.so可以不做任何修改；
  		
- 	 * 修改so的工具，由于是二进制修改，可以搜到很多二进制文件修改工具。如高级到windowns版的IDA(高级反编译工具，这里也能使用)，简单到Mac版的Hex 		Fiend，甚至文本编辑器也可以，只要有二进制插件，并能找到要改的地方。这里主要说明Mac版的Hex Fiend工具.
+ 	 * 修改so的工具，由于是二进制修改，可以搜到很多二进制文件修改工具。如高级到windowns版的IDA(高级反编译工具，这里也能使用)，
+ 	   
+ 	   简单到Mac版的Hex Fiend，甚至文本编辑器也可以，只要有二进制插件，并能找到要改的地方。这里主要说明Mac版的Hex Fiend工具.
  	 
  	   拿libssl.so举例
  	   
  	   1.用Hex Fiend打开libssl.so
  	   2.Ctrl+F 进行Text查找  (工具支持Hex和Text查找), 查找libssl.so（这是文件名)
- 	   3.Hex Fiend显示是有左右两侧的，左侧是二进制内容，右侧就是Text内容，修改时对左侧进行修改，如右侧显示的libssl.so字符串，左侧对应的二进制则是
- 	   	 6C 69 62 73 73 6C 2E 73 6F,要改为libsss.so 只需将6C 改为 73即可。 若要名字改短,如改为libss.so，则去掉6C的同时，记得要在原末尾6F后面
- 	   	 再补一个 00。或要名字改长，自己再去琢磨吧，只要不影响其他地址即可。
+ 	   3.Hex Fiend显示是有左右两侧的，左侧是二进制内容，右侧就是Text内容，修改时对左侧进行修改，如右侧显示的libssl.so字符串，
+ 	    左侧对应的二进制则是6C 69 62 73 73 6C 2E 73 6F,要改为libsss.so 只需将6C 改为 73即可。 
+ 	    若要名字改短,如改为libss.so，则去掉6C的同时，记得要在原末尾6F后面再补一个 00。
+ 	    或要名字改长，自己再去琢磨吧，只要不影响其他地址即可。
  	   4.改文件名搜libssl.so进行修改，改依赖库的名就搜libcrypto.so，修改方法是一样的。这样，就完成修改了。
  	   
  	* 修改完成后就变成了
