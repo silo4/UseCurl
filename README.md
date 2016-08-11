@@ -43,17 +43,17 @@ root
 
 
 
-##编译openssl
+## 编译openssl
 
 
-* ####下载并解压源码(本例使用openssl-1.0.1t)
+* #### 下载并解压源码(本例使用openssl-1.0.1t)
 	[download here](https://www.openssl.org/source/old)
-* ####将编译脚本移至源码目录
-	[build-android-openssl.sh](build-android-openssl.sh)
+* #### 将编译脚本移至源码目录
+	[android-config-for-openssl.sh](https://github.com/silo4/UseCurl/blob/master/android-config-for-openssl.sh)
 	
-	cp build-android-openssl.sh openssl-1.0.1t/
-* ####配置脚本
-	将 [build-android-openssl.sh](build-android-openssl.sh) 打开，对里面的参数进行相关配置，如下部分所示
+	cp android-config-for-openssl.sh openssl-1.0.1t/
+* #### 配置脚本
+	将 [android-config-for-openssl.sh](https://github.com/silo4/UseCurl/blob/master/android-config-for-openssl.sh) 打开，对里面的参数进行相关配置，如下部分所示
 	
 	 ANDROID_NDK_ROOT=$ANDROID_NDK
 	 
@@ -65,38 +65,38 @@ root
 	 
 	 _ANDROID_API="android-9"
 	 
-* ####执行脚本
-	 ./build-android-openssl.sh
+* #### 执行脚本
+	 ./android-config-for-openssl.sh.sh
 	 
-* ####执行成功后
+* #### 执行成功后
 	这时在/usr/local/ssl/里有android-9文件夹生成，所需的libssl.so libcrypto.so 等动态库、静态库和include 头文件均在这里生成
 	
-##编译nghttp2
+## 编译nghttp2
 
-* ####下载并解压源码(本例使用nghttp2-1.13.0)
+* #### 下载并解压源码(本例使用nghttp2-1.13.0)
 	[download here](http://www.nghttp2.org/)
-* ####将编译脚本移至源码目录
-	[android-config.sh](android-config.sh)
+* #### 将编译脚本移至源码目录
+	[android-config-for-nghttp2.sh](https://github.com/silo4/UseCurl/blob/master/android-config-for-nghttp2)
 	
-	cp android-config.sh nghttp2-1.13.0/
+	cp android-config-for-nghttp2.sh nghttp2-1.13.0/
 
-* ####执行脚本
-	 ./android-config.sh
+* #### 执行脚本
+	 ./android-config-for-nghttp2.sh
 	 
-* ####执行成功后
+* #### 执行成功后
 	没有指定路径，所以默认在/usr/local/lib里生成库文件libnghttp2.so, libnghttp2.a, 头文件则在/usr/loca/include/nghttp2里
 
-##编译curl
+## 编译curl
 
 
-* ####下载并解压源码(本例使用curl-7.50.1)
+* #### 下载并解压源码(本例使用curl-7.50.1)
 	[download here](https://curl.haxx.se/download.html)
-* ####将编译脚本移至源码目录
-	[android-config.sh](android-config.sh)
+* #### 将编译脚本移至源码目录
+	[android-config-for-curl.sh](https://github.com/silo4/UseCurl/blob/master/android-config-for-curl.sh)
 	
-	cp android-config.sh curl-7.50.1/
+	cp android-config-for-curl.sh curl-7.50.1/
 
-* ####执行脚本
+* #### 执行脚本
 	注意：由于要让curl支持 ssl 和 nghttp2，所以编译时要打开开关，并指定相应的库路径，如下部分所示
 	
 	./configure --host=arm-linux-androideabi \
@@ -115,10 +115,10 @@ root
 	
 	执行:
 	
-	 ./android-config.sh
+	 ./android-config-for-curl.sh
 	 
 	 
-* ####执行成功后
+* #### 执行成功后
 	没有指定路径，所以默认在/usr/local/lib里生成库文件libcurl.so libcurl.a, 头文件则在/usr/loca/include/curl里;
 	或者在当前目录即curl-7.50.1/lib/.libs 里也有；
 	
@@ -139,10 +139,10 @@ root
 
 
 ##### 下面两种方法可以解决上述问题（动态库静态库都一样改法，这里就讲动态库）
-######1. 编译libssl.so libcrypto.so libnghttp2.so前，修改相关配置或脚本，让其生成指定的名字， 比如改为 libsss.so libccc.so 。然后，编译libcurl.so时，也要修改相关脚本或配置，使其依赖libsss.so libccc.so 这些库，而不是先前名字那些库；另外，也可以修改相关脚本或配置，使其编译时创建引用库和不出现版本号在.so后面，这样就能解决上述问题。
+###### 1. 编译libssl.so libcrypto.so libnghttp2.so前，修改相关配置或脚本，让其生成指定的名字， 比如改为 libsss.so libccc.so 。然后，编译libcurl.so时，也要修改相关脚本或配置，使其依赖libsss.so libccc.so 这些库，而不是先前名字那些库；另外，也可以修改相关脚本或配置，使其编译时创建引用库和不出现版本号在.so后面，这样就能解决上述问题。
 
 
-######2. 对so二进制文件进行修改以达到改名目的
+###### 2. 对so二进制文件进行修改以达到改名目的
 
 	* 按前面的所说的方法进行编译，得到了libssl libcrypto libnghttp2等相关的库；
 	
